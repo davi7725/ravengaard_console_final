@@ -12,5 +12,12 @@ namespace ravengaard_console_final
         public string Name { get; set; }
         public float Height { get; set; }
         public float Width { get; set; }
+
+        public Pendant(string name, float height, float width)
+        {
+            Name = name;
+            Height = height;
+            Width = width;
+        }
     }
 }

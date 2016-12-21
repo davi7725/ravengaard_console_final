@@ -12,5 +12,12 @@ namespace ravengaard_console_final
         public string Name { get; set; }
         public float Lenght { get; set; }
         public float Thickness { get; set; }
+
+        public Chain(string name, float lenght, float thickness)
+        {
+            Name = name;
+            Lenght = lenght;
+            Thickness = thickness;
+        }
     }
 }

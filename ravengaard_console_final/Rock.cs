@@ -10,5 +10,10 @@ namespace ravengaard_console_final
     {
         public int RockId { get; set; }
         public string Name { get; set; }
+
+        public Rock(string name)
+        {
+            Name = name;
+        }
     }
 }

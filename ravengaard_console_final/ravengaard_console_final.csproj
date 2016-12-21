@@ -59,8 +59,6 @@
     <Compile Include="RingType.cs" />
     <Compile Include="RingTypeRepository.cs" />
     <Compile Include="Rock.cs" />
-    <Compile Include="RockHolder.cs" />
-    <Compile Include="RockHolderRepository.cs" />
     <Compile Include="RockRepository.cs" />
     <Compile Include="Ui.cs" />
   </ItemGroup>
