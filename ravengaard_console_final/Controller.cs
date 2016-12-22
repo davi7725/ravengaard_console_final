@@ -17,6 +17,7 @@ namespace ravengaard_console_final
         private ColorRepository colorRepo = new ColorRepository();
         private PendantRepository pendantRepo = new PendantRepository();
         private ChainRepository chainRepo = new ChainRepository();
+        private ProductRepository productRepo = new ProductRepository();
 
 
         public void InitializeAllRepositories()
@@ -27,6 +28,7 @@ namespace ravengaard_console_final
             GetColorRepositoryFromDb();
             GetPendantRepositoryFromDb();
             GetChainRepositoryFromDb();
+            GetProductRepositoryFromDb();
         }
 
         public void GetClientRepositoryFromDb()
@@ -62,6 +64,11 @@ namespace ravengaard_console_final
         {
             chainRepo.Clear();
             Db.GetChain(chainRepo);
+        }
+        public void GetProductRepositoryFromDb()
+        {
+            productRepo.Clear();
+            Db.GetProduct(productRepo);
         }
 
         public bool LoginProcedure()
@@ -184,7 +191,7 @@ namespace ravengaard_console_final
                         NecklaceDesigner();
                         break;
                     case "8":
-                        //Checkout();
+                        Checkout();
                         break;
                     default:
                         if (isExitOption(option))
@@ -204,6 +211,44 @@ namespace ravengaard_console_final
             } while (isMenuRunning == false && isExitOption(option) == false);
 
             return isMenuRunning;
+        }
+        private void Checkout()
+        {
+            bool isCheckingOut = false;
+
+            string option = "";
+            do
+            {
+                Ui.ShowCheckoutMenu();
+                option = Console.ReadLine();
+                switch (option)
+                {
+                    case "1":
+                        Ui.ShowAllInsertedProducts(productRepo.getAllProductsCreatedThisSession(), ringTypeRepo, rockRepo, colorRepo, pendantRepo, chainRepo);
+                        break;
+                    case "2":
+                        //CheckoutItems();
+                        break;
+                    /*default:
+                        if (isExitOption(option))
+                        {
+                            isCheckingOut = checkRingIsCompleted(ringType, rock, color);
+                            option = "";
+
+                            if (allFieldsAreFullfiled(ringType, rock, color) && isDesigning == false)
+                            {
+                                Product ring = productRepo.CreateRing(productRepo.NextId(), rock, ringType, color);
+                                productRepo.AddRing(ring);
+                            }
+                        }
+                        else
+                        {
+                            Ui.ShowInvalidOptionError(option);
+                        }
+                        break;*/
+                }
+            } while (isCheckingOut == true && isExitOption(option) == false);
+
         }
 
         private void RingDesigner()
@@ -233,7 +278,14 @@ namespace ravengaard_console_final
                     default:
                         if (isExitOption(option))
                         {
-                            isDesigning = false;
+                            isDesigning = checkRingIsCompleted(ringType, rock, color);
+                            option = "";
+
+                            if (allFieldsAreFullfiled(ringType,rock,color) && isDesigning == false)
+                            {
+                                Product ring = productRepo.CreateRing(productRepo.NextId(),rock, ringType, color,true);
+                                productRepo.AddRing(ring);
+                            }
                         }
                         else
                         {
@@ -243,6 +295,73 @@ namespace ravengaard_console_final
                 }
             } while (isDesigning == true && isExitOption(option) == false);
 
+        }
+
+        private bool allFieldsAreFullfiled(int product, int product1, int product2)
+        {
+            bool arefullfiled = true;
+            if (product == 0 || product1 == 0 || product2 == 0)
+            {
+                arefullfiled = false;
+            }
+
+            return arefullfiled;
+        }
+
+        private bool checkRingIsCompleted(int ringType, int rock, int color)
+        {
+            bool yesOrNoOption = false;
+            if(allFieldsAreFullfiled(ringType,rock,color) == false)
+            {
+                Ui.Clear();
+                Ui.WriteL("Looks like you forgot to select one of the options (Ring Type, Rock or Color), are you sure you want to exit? (Y/N)");
+                Ui.WriteL("If you do, all your changes will be discarded!");
+                string option = Console.ReadLine().ToLower();
+
+                switch(option)
+                {
+                    case "y":
+                        yesOrNoOption = false;
+                        break;
+                    case "n":
+                        yesOrNoOption = true;
+                        break;
+                }
+            }
+            else
+            {
+                yesOrNoOption = false;
+            }
+
+            return yesOrNoOption;
+        }
+
+        private bool checkNecklaceIsCompleted(int chain, int pendant, int color)
+        {
+            bool yesOrNoOption = false;
+            if (allFieldsAreFullfiled(chain, pendant, color) == false)
+            {
+                Ui.Clear();
+                Ui.WriteL("Looks like you forgot to select one of the options (Necklace Chain, Pendant or Color), are you sure you want to exit? (Y/N)");
+                Ui.WriteL("If you do, all your changes will be discarded!");
+                string option = Console.ReadLine().ToLower();
+
+                switch (option)
+                {
+                    case "y":
+                        yesOrNoOption = false;
+                        break;
+                    case "n":
+                        yesOrNoOption = true;
+                        break;
+                }
+            }
+            else
+            {
+                yesOrNoOption = false;
+            }
+
+            return yesOrNoOption;
         }
 
         private void NecklaceDesigner()
@@ -261,10 +380,10 @@ namespace ravengaard_console_final
                 switch (option)
                 {
                     case "1":
-                        pendant = Pendant();
+                        chain = Chain();
                         break;
                     case "2":
-                        chain = Chain();
+                        pendant = Pendant();
                         break;
                     case "3":
                         color = Color();
@@ -272,7 +391,14 @@ namespace ravengaard_console_final
                     default:
                         if (isExitOption(option))
                         {
-                            isDesigning = false;
+                            isDesigning = checkNecklaceIsCompleted(pendant, chain, color);
+                            option = "";
+
+                            if(isDesigning == false && allFieldsAreFullfiled(pendant,chain,color))
+                            {
+                                Product necklace = productRepo.CreateNecklace(productRepo.NextId(), chain,pendant,color,true);
+                                productRepo.AddNecklace(necklace);
+                            }
                         }
                         else
                         {
@@ -286,7 +412,7 @@ namespace ravengaard_console_final
 
         private int Pendant()
         {
-            Dictionary<int, string> chainProducts = chainRepo.idAndNameOfProducts();
+            Dictionary<int, string> pendantProducts = pendantRepo.idAndNameOfProducts();
 
             string option = "";
             bool isChoosingProduct = true;
@@ -294,7 +420,7 @@ namespace ravengaard_console_final
 
             do
             {
-                Ui.ShowListOfOptions(chainProducts);
+                Ui.ShowListOfOptions(pendantProducts);
 
                 option = Console.ReadLine();
 
@@ -306,7 +432,7 @@ namespace ravengaard_console_final
                 {
                     try
                     {
-                        optionInt = chosenOptionExists(option, chainProducts);
+                        optionInt = chosenOptionExists(option, pendantProducts);
                         isChoosingProduct = false;
                     }
                     catch
@@ -323,7 +449,7 @@ namespace ravengaard_console_final
 
         private int Chain()
         {
-            Dictionary<int, string> pendantProducts = pendantRepo.idAndNameOfProducts();
+            Dictionary<int, string> chainProducts = chainRepo.idAndNameOfProducts();
 
             string option = "";
             bool isChoosingProduct = true;
@@ -331,7 +457,7 @@ namespace ravengaard_console_final
 
             do
             {
-                Ui.ShowListOfOptions(pendantProducts);
+                Ui.ShowListOfOptions(chainProducts);
 
                 option = Console.ReadLine();
 
@@ -343,7 +469,7 @@ namespace ravengaard_console_final
                         {
                             try
                             {
-                                optionInt = chosenOptionExists(option, pendantProducts);
+                                optionInt = chosenOptionExists(option, chainProducts);
                                 isChoosingProduct = false;
                             }
                             catch

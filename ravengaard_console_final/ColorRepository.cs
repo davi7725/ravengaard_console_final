@@ -36,5 +36,10 @@ namespace ravengaard_console_final
 
             return color;
         }
+
+        internal string Load(int color)
+        {
+            return dictionaryOfColor[color].Name;
+        }
     }
 }

@@ -42,6 +42,76 @@ namespace ravengaard_console_final
             return clientInserted;
         }
 
+        internal static int GetNextProductId()
+        {
+            return 1;
+        }
+
+        internal static bool InsertRingIntoDb(Product product)
+        {
+            bool productInserted = true;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_NewProduct", con);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ProductType", product.ProductType));
+                    command.Parameters.Add(new SqlParameter("@RingType", product.RingType));
+                    command.Parameters.Add(new SqlParameter("@Rock", product.Rock));
+                    command.Parameters.Add(new SqlParameter("@Chain", DBNull.Value));
+                    command.Parameters.Add(new SqlParameter("@Pendant", DBNull.Value));
+                    command.Parameters.Add(new SqlParameter("@Color", product.Color));
+                    Console.WriteLine(product.RingType);
+
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException e)
+                {
+
+                    Console.WriteLine(e.Message.ToString());
+                    Console.ReadKey();
+                    productInserted = false;
+                }
+            }
+
+            return productInserted;
+        }
+
+        internal static bool InsertNecklaceIntoDb(Product product)
+        {
+            bool productInserted = true;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_NewProduct", con);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ProductType", product.ProductType));
+                    command.Parameters.Add(new SqlParameter("@RingType", DBNull.Value));
+                    command.Parameters.Add(new SqlParameter("@Rock", DBNull.Value));
+                    command.Parameters.Add(new SqlParameter("@Chain", product.Chain));
+                    command.Parameters.Add(new SqlParameter("@Pendant", product.Pendant));
+                    command.Parameters.Add(new SqlParameter("@Color", product.Color));
+
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException e)
+                {
+
+                    Console.WriteLine(e.Message.ToString());
+                    Console.ReadKey();
+                    productInserted = false;
+                }
+            }
+
+            return productInserted;
+        }
+
         internal static void GetColor(ColorRepository colorRepo)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -58,6 +128,40 @@ namespace ravengaard_console_final
                         while (rdr.Read())
                         {
                             colorRepo.Create(Convert.ToInt32(rdr["Color_ID"]), rdr["Color_Name"].ToString());
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Ui.WriteL(e.ToString());
+                    Ui.WriteL("There was an error, try again later!");
+                }
+            }
+        }
+
+        internal static void GetProduct(ProductRepository productRepo)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_GetProduct", con);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataReader rdr = command.ExecuteReader();
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            if(Convert.ToInt32(rdr["ProductType"]) == 1)
+                            {
+                                productRepo.CreateRing(Convert.ToInt32(rdr["Pro_ID"]),Convert.ToInt32(rdr["Rock"]), Convert.ToInt32(rdr["RingType"]), Convert.ToInt32(rdr["Color"]),false);
+                            }
+                            else if(Convert.ToInt32(rdr["ProductType"]) == 2)
+                            {
+                                productRepo.CreateNecklace(Convert.ToInt32(rdr["Pro_ID"]), Convert.ToInt32(rdr["Chain"]), Convert.ToInt32(rdr["Pendant"]), Convert.ToInt32(rdr["Color"]),false);
+                            }
                         }
                     }
                 }

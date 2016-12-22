@@ -83,5 +83,36 @@ namespace ravengaard_console_final
         {
             Console.ReadKey();
         }
+
+        internal static void ShowAllInsertedProducts(Dictionary<int, Product> dictionary, RingTypeRepository ringTypeRepo, RockRepository rockRepo, ColorRepository colorRepo, PendantRepository pendantRepo, ChainRepository chainRepo)
+        {
+            Clear();
+            foreach(KeyValuePair<int, Product> kvp in dictionary)
+            {
+                if(kvp.Value.ProductType == 1)
+                {
+                    WriteL("*-------------------------*");
+                    WriteL(ringTypeRepo.Load(kvp.Value.RingType) + " | " + rockRepo.Load(kvp.Value.Rock) + " | " + colorRepo.Load(kvp.Value.Color));
+                }
+                else if (kvp.Value.ProductType == 2)
+                {
+                    WriteL("*-------------------------*");
+                    WriteL(chainRepo.Load(kvp.Value.Chain) + " | " + pendantRepo.Load(kvp.Value.Pendant) + " | " + colorRepo.Load(kvp.Value.Color));
+                }
+                WriteL("\nPress any key to exit");
+                Wait();
+            }
+        }
+
+        internal static void ShowCheckoutMenu()
+        {
+            Clear();
+            Console.WriteLine("What do you want to design first?");
+            Console.WriteLine("1. Show cart products");
+            Console.WriteLine("2. Order the products");
+            Console.WriteLine("3. Necklace Color");
+            Console.WriteLine("Q. Exit");
+            Console.WriteLine("Please choose an option:");
+        }
     }
 }

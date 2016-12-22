@@ -36,5 +36,10 @@ namespace ravengaard_console_final
 
             return rock;
         }
+
+        internal string Load(int rock)
+        {
+            return dictionaryOfRock[rock].Name;
+        }
     }
 }

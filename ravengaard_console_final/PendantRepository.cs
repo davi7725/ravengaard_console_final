@@ -36,5 +36,10 @@ namespace ravengaard_console_final
 
             return pendant;
         }
+
+        internal string Load(int pendant)
+        {
+            return dictionaryOfPendant[pendant].Name + "(" + dictionaryOfPendant[pendant].Height + "," + dictionaryOfPendant[pendant].Width + ")";
+        }
     }
 }

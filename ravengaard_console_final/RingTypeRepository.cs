@@ -36,5 +36,10 @@ namespace ravengaard_console_final
 
             return ringType;
         }
+
+        internal string Load(int ringType)
+        {
+            return dictionaryOfRingType[ringType].Name;
+        }
     }
 }

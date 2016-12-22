@@ -36,5 +36,10 @@ namespace ravengaard_console_final
 
             return chain;
         }
+
+        internal string Load(int chain)
+        {
+            return dictionaryOfChain[chain].Name + "(" + dictionaryOfChain[chain].Lenght+","+dictionaryOfChain[chain].Thickness+")";
+        }
     }
 }
