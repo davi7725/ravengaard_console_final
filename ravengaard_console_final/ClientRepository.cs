@@ -15,9 +15,9 @@ namespace ravengaard_console_final
             clientDictionary.Clear();
         }
 
-        public Client CreateClient(string cliFN, string cliLN, string cliPhone, string cliAddress, string cliEmail)
+        public Client CreateClient(string cliFN, string cliLN, string cliPhone, string cliAddress, string cliEmail, string password)
         {
-            Client client = new Client(cliFN, cliLN, cliPhone, cliAddress, cliEmail);
+            Client client = new Client(cliFN, cliLN, cliPhone, cliAddress, cliEmail, password);
 
             return client;
         }

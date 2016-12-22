@@ -14,15 +14,17 @@ namespace ravengaard_console_final
         public string Phone { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
 
         public Client() { }
-        public Client(string cliFN, string cliLN, string cliPhone, string cliAddress, string cliEmail)
+        public Client(string cliFN, string cliLN, string cliPhone, string cliAddress, string cliEmail, string cliPassword)
         {
             FirstName = cliFN;
             LastName = cliLN;
             Phone = cliPhone;
             Address = cliAddress;
             Email = cliEmail;
+            Password = cliPassword;
         }
     }
 }

@@ -113,7 +113,7 @@ namespace ravengaard_console_final
                     Ui.WriteL("Password: ");
                     password = Console.ReadLine();
 
-                    if (username == "a" && password == "a")
+                    if (Db.isUsernamePasswordCorrect(username, password))
                     {
                         isLoggedIn = true;
                     }
@@ -151,7 +151,7 @@ namespace ravengaard_console_final
             Ui.WriteL("Email: ");
             email = Console.ReadLine();
 
-            Client newClient = cliRepo.CreateClient(firstName, lastName, phone, address, email);
+            Client newClient = cliRepo.CreateClient(firstName, lastName, phone, address, email, password);
             bool inserted = Db.InsertClientIntoDb(newClient);
 
             GetClientRepositoryFromDb();
