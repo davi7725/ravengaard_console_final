@@ -28,12 +28,11 @@ namespace ravengaard_console_final
             dictionaryOfRock.Clear();
         }
 
-        public Rock Create(string name)
+        public Rock Create(int id, string name)
         {
-            Rock rock = new Rock(name);
-            rock.RockId = 1;
+            Rock rock = new Rock(id, name);
 
-            dictionaryOfRock.Add(1, rock);
+            dictionaryOfRock.Add(id, rock);
 
             return rock;
         }

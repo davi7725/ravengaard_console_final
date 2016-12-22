@@ -28,12 +28,11 @@ namespace ravengaard_console_final
             dictionaryOfColor.Clear();
         }
 
-        public Color Create(string name)
+        public Color Create(int id, string name)
         {
-            Color color = new Color(name);
-            color.ColorId = 1;
+            Color color = new Color(id, name);
 
-            dictionaryOfColor.Add(1, color);
+            dictionaryOfColor.Add(id, color);
 
             return color;
         }

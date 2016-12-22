@@ -29,7 +29,7 @@ namespace ravengaard_console_final
                     command.Parameters.Add(new SqlParameter("@Phone", client.Phone));
                     command.Parameters.Add(new SqlParameter("@AddressInfo", client.Address));
                     command.Parameters.Add(new SqlParameter("@Cli_Password", client.Password));
-                    command.Parameters.Add(new SqlParameter("@Email", client.Email));
+                    command.Parameters.Add(new SqlParameter("@Email", client.Email.ToLower()));
 
                     command.ExecuteNonQuery();
                 }
@@ -42,9 +42,146 @@ namespace ravengaard_console_final
             return clientInserted;
         }
 
+        internal static void GetColor(ColorRepository colorRepo)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_GetColor", con);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataReader rdr = command.ExecuteReader();
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            colorRepo.Create(Convert.ToInt32(rdr["Color_ID"]), rdr["Color_Name"].ToString());
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Ui.WriteL(e.ToString());
+                    Ui.WriteL("There was an error, try again later!");
+                }
+            }
+        }
+
+        internal static void GetPendant(PendantRepository pendantRepo)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_GetPendant", con);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataReader rdr = command.ExecuteReader();
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            pendantRepo.Create(Convert.ToInt32(rdr["Pendant_ID"]), rdr["Pendant_Name"].ToString(), Convert.ToSingle(rdr["Pendant_Height"]), Convert.ToSingle(rdr["Pendant_Width"]));
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Ui.WriteL(e.ToString());
+                    Ui.WriteL("There was an error, try again later!");
+                }
+            }
+        }
+
+        internal static void GetChain(ChainRepository chainRepo)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_GetChain", con);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataReader rdr = command.ExecuteReader();
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            chainRepo.Create(Convert.ToInt32(rdr["Chain_ID"]), rdr["Chain_Name"].ToString(), Convert.ToSingle(rdr["Chain_Length"]), Convert.ToSingle(rdr["Chain_Thickness"]));
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Ui.WriteL(e.ToString());
+                    Ui.WriteL("There was an error, try again later!");
+                    Ui.Wait();
+                }
+            }
+        }
+
+        internal static void GetRock(RockRepository rockRepo)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_GetRock", con);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataReader rdr = command.ExecuteReader();
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            rockRepo.Create(Convert.ToInt32(rdr["Rock_ID"]), rdr["Rock_Name"].ToString());
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Ui.WriteL(e.ToString());
+                    Ui.WriteL("There was an error, try again later!");
+                }
+            }
+        }
+
+        internal static void GetRingType(RingTypeRepository ringTypeRepo)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_GetRingType", con);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataReader rdr = command.ExecuteReader();
+                    if (rdr.HasRows)
+                    {
+                        while(rdr.Read())
+                        {
+                            ringTypeRepo.Create(Convert.ToInt32(rdr["RingType_ID"]), rdr["RingType_Name"].ToString());
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Ui.WriteL(e.ToString());
+                    Ui.WriteL("There was an error, try again later!");
+                }
+            }
+        }
+
         static public bool isUsernamePasswordCorrect(string username, string password)
         {
             bool isCombinationCorrect = false;
+            username = username.ToLower();
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {

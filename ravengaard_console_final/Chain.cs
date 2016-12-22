@@ -13,8 +13,9 @@ namespace ravengaard_console_final
         public float Lenght { get; set; }
         public float Thickness { get; set; }
 
-        public Chain(string name, float lenght, float thickness)
+        public Chain(int id, string name, float lenght, float thickness)
         {
+            ChainId = id;
             Name = name;
             Lenght = lenght;
             Thickness = thickness;

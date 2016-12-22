@@ -28,12 +28,11 @@ namespace ravengaard_console_final
             dictionaryOfChain.Clear();
         }
 
-        public Chain Create(string name, float lenght, float thickness)
+        public Chain Create(int id, string name, float lenght, float thickness)
         {
-            Chain chain = new Chain(name, lenght, thickness);
-            chain.ChainId = 1;
+            Chain chain = new Chain(id, name, lenght, thickness);
 
-            dictionaryOfChain.Add(1, chain);
+            dictionaryOfChain.Add(id, chain);
 
             return chain;
         }

@@ -11,8 +11,9 @@ namespace ravengaard_console_final
         public int RingTypeId { get; set; }
         public string Name { get; set; }
 
-        public RingType(string name)
+        public RingType(int id, string name)
         {
+            RingTypeId = id;
             Name = name;
         }
     }

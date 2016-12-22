@@ -28,12 +28,11 @@ namespace ravengaard_console_final
             dictionaryOfPendant.Clear();
         }
 
-        public Pendant Create(string name, float height, float width)
+        public Pendant Create(int id, string name, float height, float width)
         {
-            Pendant pendant = new Pendant(name,height,width);
-            pendant.PendantId = 1;
+            Pendant pendant = new Pendant(id, name,height,width);
 
-            dictionaryOfPendant.Add(1, pendant);
+            dictionaryOfPendant.Add(id, pendant);
 
             return pendant;
         }

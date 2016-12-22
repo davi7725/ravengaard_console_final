@@ -28,12 +28,11 @@ namespace ravengaard_console_final
             dictionaryOfRingType.Clear();
         }
 
-        public RingType Create(string name)
+        public RingType Create(int id, string name)
         {
-            RingType ringType = new RingType(name);
-            ringType.RingTypeId = 1;
+            RingType ringType = new RingType(id, name);
 
-            dictionaryOfRingType.Add(1,ringType);
+            dictionaryOfRingType.Add(id, ringType);
 
             return ringType;
         }

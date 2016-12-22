@@ -37,31 +37,31 @@ namespace ravengaard_console_final
         public void GetRingTypeRepositoryFromDb()
         {
             ringTypeRepo.Clear();
-            ringTypeRepo.Create("Teste");
+            Db.GetRingType(ringTypeRepo);
         }
 
         public void GetRockRepositoryFromDb()
         {
             rockRepo.Clear();
-            rockRepo.Create("Teste");
+            Db.GetRock(rockRepo);
         }
 
         public void GetColorRepositoryFromDb()
         {
             colorRepo.Clear();
-            colorRepo.Create("Yello");
+            Db.GetColor(colorRepo);
         }
 
         public void GetPendantRepositoryFromDb()
         {
             pendantRepo.Clear();
-            pendantRepo.Create("pendanti", 1.2f, 3.4f);
+            Db.GetPendant(pendantRepo);
         }
 
         public void GetChainRepositoryFromDb()
         {
             chainRepo.Clear();
-            chainRepo.Create("chainz", 1.2f, 3.4f);
+            Db.GetChain(chainRepo);
         }
 
         public bool LoginProcedure()
@@ -107,8 +107,11 @@ namespace ravengaard_console_final
                 Ui.Clear();
                 Ui.WriteL("If you want to cancel write \"exit\" as username!");
                 Ui.WriteL("Email: ");
+
                 username = Console.ReadLine();
-                if(username != "exit")
+                username = username.ToLower();
+
+                if(isExitOption(username) == false)
                 {
                     Ui.WriteL("Password: ");
                     password = Console.ReadLine();
@@ -227,11 +230,15 @@ namespace ravengaard_console_final
                     case "3":
                         color = Color();
                         break;
-                    case "9":
-                        isDesigning = false;
-                        break;
                     default:
-                        Ui.ShowInvalidOptionError(option);
+                        if (isExitOption(option))
+                        {
+                            isDesigning = false;
+                        }
+                        else
+                        {
+                            Ui.ShowInvalidOptionError(option);
+                        }
                         break;
                 }
             } while (isDesigning == true && isExitOption(option) == false);
@@ -262,11 +269,15 @@ namespace ravengaard_console_final
                     case "3":
                         color = Color();
                         break;
-                    case "9":
-                        isDesigning = false;
-                        break;
                     default:
-                        Ui.ShowInvalidOptionError(option);
+                        if (isExitOption(option))
+                        {
+                            isDesigning = false;
+                        }
+                        else
+                        {
+                            Ui.ShowInvalidOptionError(option);
+                        }
                         break;
                 }
             } while (isDesigning == true && isExitOption(option) == false);
@@ -287,23 +298,22 @@ namespace ravengaard_console_final
 
                 option = Console.ReadLine();
 
-                switch (option)
+                if (isExitOption(option))
                 {
-                    case "9":
+                    isChoosingProduct = false;
+                }
+                else
+                {
+                    try
+                    {
+                        optionInt = chosenOptionExists(option, chainProducts);
                         isChoosingProduct = false;
-                        break;
-                    default:
-                        try
-                        {
-                            optionInt = chosenOptionExists(option, chainProducts);
-                            isChoosingProduct = false;
-                        }
-                        catch
-                        {
-                            Ui.ShowInvalidOptionError(option);
-                            Ui.Clear();
-                        }
-                        break;
+                    }
+                    catch
+                    {
+                        Ui.ShowInvalidOptionError(option);
+                        Ui.Clear();
+                    }
                 }
 
             } while (isChoosingProduct == true && isExitOption(option) == false);
@@ -325,24 +335,23 @@ namespace ravengaard_console_final
 
                 option = Console.ReadLine();
 
-                switch (option)
-                {
-                    case "9":
-                        isChoosingProduct = false;
-                        break;
-                    default:
-                        try
+                if (isExitOption(option))
                         {
-                            optionInt = chosenOptionExists(option, pendantProducts);
                             isChoosingProduct = false;
                         }
-                        catch
+                        else
                         {
-                            Ui.ShowInvalidOptionError(option);
-                            Ui.Clear();
+                            try
+                            {
+                                optionInt = chosenOptionExists(option, pendantProducts);
+                                isChoosingProduct = false;
+                            }
+                            catch
+                            {
+                                Ui.ShowInvalidOptionError(option);
+                                Ui.Clear();
+                            }
                         }
-                        break;
-                }
 
             } while (isChoosingProduct == true && isExitOption(option) == false);
 
@@ -363,25 +372,23 @@ namespace ravengaard_console_final
 
                 option = Console.ReadLine();
 
-                switch (option)
+                if (isExitOption(option))
                 {
-                    case "9":
-                        isChoosingProduct = false;
-                        break;
-                    default:
-                        try
-                        {
-                            optionInt = chosenOptionExists(option, ringTypeProducts);
-                            isChoosingProduct = false;
-                        }
-                        catch
-                        {
-                            Ui.ShowInvalidOptionError(option);
-                            Ui.Clear();
-                        }
-                        break;
+                    isChoosingProduct = false;
                 }
-
+                else
+                {
+                    try
+                    {
+                        optionInt = chosenOptionExists(option, ringTypeProducts);
+                        isChoosingProduct = false;
+                    }
+                    catch
+                    {
+                        Ui.ShowInvalidOptionError(option);
+                        Ui.Clear();
+                    }
+                }
             } while (isChoosingProduct == true && isExitOption(option) == false);
 
             return optionInt;
@@ -401,23 +408,22 @@ namespace ravengaard_console_final
 
                 option = Console.ReadLine();
 
-                switch (option)
+                if (isExitOption(option))
                 {
-                    case "9":
+                    isChoosingProduct = false;
+                }
+                else
+                {
+                    try
+                    {
+                        optionInt = chosenOptionExists(option, rockProducts);
                         isChoosingProduct = false;
-                        break;
-                    default:
-                        try
-                        {
-                            optionInt = chosenOptionExists(option, rockProducts);
-                            isChoosingProduct = false;
-                        }
-                        catch
-                        {
-                            Ui.ShowInvalidOptionError(option);
-                            Ui.Clear();
-                        }
-                        break;
+                    }
+                    catch
+                    {
+                        Ui.ShowInvalidOptionError(option);
+                        Ui.Clear();
+                    }
                 }
 
             } while (isChoosingProduct == true && isExitOption(option) == false);
@@ -439,23 +445,22 @@ namespace ravengaard_console_final
 
                 option = Console.ReadLine();
 
-                switch (option)
+                if (isExitOption(option))
                 {
-                    case "9":
+                    isChoosingProduct = false;
+                }
+                else
+                {
+                    try
+                    {
+                        optionInt = chosenOptionExists(option, colorProducts);
                         isChoosingProduct = false;
-                        break;
-                    default:
-                        try
-                        {
-                            optionInt = chosenOptionExists(option, colorProducts);
-                            isChoosingProduct = false;
-                        }
-                        catch
-                        {
-                            Ui.ShowInvalidOptionError(option);
-                            Ui.Clear();
-                        }
-                        break;
+                    }
+                    catch
+                    {
+                        Ui.ShowInvalidOptionError(option);
+                        Ui.Clear();
+                    }
                 }
 
             } while (isChoosingProduct == true && isExitOption(option) == false);
@@ -486,8 +491,9 @@ namespace ravengaard_console_final
         private bool isExitOption(string option)
         {
             bool isExitOp = false;
+            option = option.ToLower();
 
-            if (option == "9" || option == "exit")
+            if (option == "q" || option == "exit")
             {
                 isExitOp = true;
             }

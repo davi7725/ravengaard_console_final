@@ -11,8 +11,9 @@ namespace ravengaard_console_final
         public int RockId { get; set; }
         public string Name { get; set; }
 
-        public Rock(string name)
+        public Rock(int id, string name)
         {
+            RockId = id;
             Name = name;
         }
     }

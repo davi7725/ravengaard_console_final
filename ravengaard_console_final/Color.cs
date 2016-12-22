@@ -11,8 +11,9 @@ namespace ravengaard_console_final
         public int ColorId { get; set; }
         public string Name { get; set; }
 
-        public Color(string name)
+        public Color(int id, string name)
         {
+            ColorId = id;
             Name = name;
         }
     }

@@ -13,8 +13,9 @@ namespace ravengaard_console_final
         public float Height { get; set; }
         public float Width { get; set; }
 
-        public Pendant(string name, float height, float width)
+        public Pendant(int id, string name, float height, float width)
         {
+            PendantId = id;
             Name = name;
             Height = height;
             Width = width;

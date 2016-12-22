@@ -14,7 +14,7 @@ namespace ravengaard_console_final
             Console.WriteLine("New to Ravengaard or regular customer?");
             Console.WriteLine("1. Login");
             Console.WriteLine("2. Create Account");
-            Console.WriteLine("9. Exit");
+            Console.WriteLine("Q. Exit");
         }
 
         static public void ShowMainMenu()
@@ -25,7 +25,7 @@ namespace ravengaard_console_final
             Console.WriteLine("1. Ring");
             Console.WriteLine("2. Necklace");
             Console.WriteLine("8. Go To Checkout");
-            Console.WriteLine("9. Exit");
+            Console.WriteLine("Q. Exit");
             Console.WriteLine("Select what kind of product you want to design:");
         }
 
@@ -36,7 +36,7 @@ namespace ravengaard_console_final
             Console.WriteLine("1. Ring Type");
             Console.WriteLine("2. Rock Type");
             Console.WriteLine("3. Ring Color");
-            Console.WriteLine("9. Exit");
+            Console.WriteLine("Q. Exit");
             Console.WriteLine("Please choose an option:");
         }
 
@@ -47,7 +47,7 @@ namespace ravengaard_console_final
             Console.WriteLine("1. Necklace Chain");
             Console.WriteLine("2. Necklace Pendant");
             Console.WriteLine("3. Necklace Color");
-            Console.WriteLine("9. Exit");
+            Console.WriteLine("Q. Exit");
             Console.WriteLine("Please choose an option:");
         }
 
