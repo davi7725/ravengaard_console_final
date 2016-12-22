@@ -17,8 +17,9 @@ namespace ravengaard_console_final
         public string Password { get; set; }
 
         public Client() { }
-        public Client(string cliFN, string cliLN, string cliPhone, string cliAddress, string cliEmail, string cliPassword)
+        public Client(int id, string cliFN, string cliLN, string cliPhone, string cliAddress, string cliEmail, string cliPassword)
         {
+            ClientId = id;
             FirstName = cliFN;
             LastName = cliLN;
             Phone = cliPhone;

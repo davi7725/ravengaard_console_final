@@ -17,16 +17,7 @@ namespace ravengaard_console_final
 
             return ring;
         }
-
-        public void AddRing(Product ring)
-        {
-            Db.InsertRingIntoDb(ring);
-        }
-
-        public void AddNecklace(Product necklace)
-        {
-            Db.InsertNecklaceIntoDb(necklace);
-        }
+        
 
         public Product CreateNecklace(int id, int chain, int pendant, int color, bool createdNow)
         {

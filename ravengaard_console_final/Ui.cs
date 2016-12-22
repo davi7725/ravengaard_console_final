@@ -99,9 +99,10 @@ namespace ravengaard_console_final
                     WriteL("*-------------------------*");
                     WriteL(chainRepo.Load(kvp.Value.Chain) + " | " + pendantRepo.Load(kvp.Value.Pendant) + " | " + colorRepo.Load(kvp.Value.Color));
                 }
-                WriteL("\nPress any key to exit");
-                Wait();
             }
+
+            WriteL("\nPress any key to exit");
+            Wait();
         }
 
         internal static void ShowCheckoutMenu()
@@ -110,7 +111,6 @@ namespace ravengaard_console_final
             Console.WriteLine("What do you want to design first?");
             Console.WriteLine("1. Show cart products");
             Console.WriteLine("2. Order the products");
-            Console.WriteLine("3. Necklace Color");
             Console.WriteLine("Q. Exit");
             Console.WriteLine("Please choose an option:");
         }

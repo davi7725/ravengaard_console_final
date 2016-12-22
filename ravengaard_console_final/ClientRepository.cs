@@ -15,11 +15,39 @@ namespace ravengaard_console_final
             clientDictionary.Clear();
         }
 
-        public Client CreateClient(string cliFN, string cliLN, string cliPhone, string cliAddress, string cliEmail, string password)
+        public Client Create(int id, string cliFN, string cliLN, string cliPhone, string cliAddress, string cliEmail, string password)
         {
-            Client client = new Client(cliFN, cliLN, cliPhone, cliAddress, cliEmail, password);
+            Client client = new Client(id, cliFN, cliLN, cliPhone, cliAddress, cliEmail, password);
+            clientDictionary.Add(id, client);
 
             return client;
+        }
+
+        internal Client Load(string username)
+        {
+            Client loadedClient = null;
+            foreach(Client cli in clientDictionary.Values)
+            {
+                if(cli.Email == username)
+                {
+                    loadedClient = cli;
+                }
+            }
+
+            return loadedClient;
+        }
+
+        public int NextId()
+        {
+            int greatestId = 0;
+            foreach (int id in clientDictionary.Keys)
+            {
+                if (id > greatestId)
+                {
+                    greatestId = id;
+                }
+            }
+            return greatestId + 1;
         }
     }
 }

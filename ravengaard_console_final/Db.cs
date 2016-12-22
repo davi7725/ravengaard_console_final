@@ -47,9 +47,10 @@ namespace ravengaard_console_final
             return 1;
         }
 
-        internal static bool InsertRingIntoDb(Product product)
+        internal static bool InsertRingIntoDb(Product product, int clientId)
         {
             bool productInserted = true;
+            int productId = 0;
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -64,9 +65,8 @@ namespace ravengaard_console_final
                     command.Parameters.Add(new SqlParameter("@Chain", DBNull.Value));
                     command.Parameters.Add(new SqlParameter("@Pendant", DBNull.Value));
                     command.Parameters.Add(new SqlParameter("@Color", product.Color));
-                    Console.WriteLine(product.RingType);
 
-                    command.ExecuteNonQuery();
+                    productId = (int)command.ExecuteScalar();
                 }
                 catch (SqlException e)
                 {
@@ -75,14 +75,16 @@ namespace ravengaard_console_final
                     Console.ReadKey();
                     productInserted = false;
                 }
+                registerOrder(productId, clientId);
             }
 
             return productInserted;
         }
 
-        internal static bool InsertNecklaceIntoDb(Product product)
+        internal static bool InsertNecklaceIntoDb(Product product, int clientId)
         {
             bool productInserted = true;
+            int productId = 0;
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -98,7 +100,7 @@ namespace ravengaard_console_final
                     command.Parameters.Add(new SqlParameter("@Pendant", product.Pendant));
                     command.Parameters.Add(new SqlParameter("@Color", product.Color));
 
-                    command.ExecuteNonQuery();
+                    productId = (int)command.ExecuteScalar();
                 }
                 catch (SqlException e)
                 {
@@ -107,9 +109,33 @@ namespace ravengaard_console_final
                     Console.ReadKey();
                     productInserted = false;
                 }
+                registerOrder(productId, clientId);
             }
 
             return productInserted;
+        }
+
+        private static void registerOrder(int proId,int cliId)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_NewOrder", con);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Pro_Id", proId));
+                    command.Parameters.Add(new SqlParameter("@Cli_Id", cliId));
+
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException e)
+                {
+
+                    Console.WriteLine(e.Message.ToString());
+                    Console.ReadKey();
+                }
+            }
         }
 
         internal static void GetColor(ColorRepository colorRepo)
@@ -200,6 +226,33 @@ namespace ravengaard_console_final
             }
         }
 
+
+        internal static void GetClient(ClientRepository clientRepo)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand command = new SqlCommand("prc_GetClient", con);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataReader rdr = command.ExecuteReader();
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            clientRepo.Create(Convert.ToInt32(rdr["Cli_ID"]),rdr["FirstName"].ToString(),rdr["LastName"].ToString(),rdr["Phone"].ToString(),rdr["AddressInfo"].ToString(), rdr["Email"].ToString(), rdr["Cli_Password"].ToString());
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Ui.WriteL(e.ToString());
+                    Ui.WriteL("There was an error, try again later!");
+                }
+            }
+        }
         internal static void GetChain(ChainRepository chainRepo)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -224,6 +277,21 @@ namespace ravengaard_console_final
                     Ui.WriteL(e.ToString());
                     Ui.WriteL("There was an error, try again later!");
                     Ui.Wait();
+                }
+            }
+        }
+
+        internal static void AddProductsToTheDb(Dictionary<int, Product> dictionary, Client loggedInClient)
+        {
+            foreach(KeyValuePair<int,Product> prd in dictionary)
+            {
+                if(prd.Value.ProductType == 1)
+                {
+                    InsertRingIntoDb(prd.Value, loggedInClient.ClientId);
+                }
+                else if(prd.Value.ProductType == 2)
+                {
+                    InsertNecklaceIntoDb(prd.Value, loggedInClient.ClientId);
                 }
             }
         }

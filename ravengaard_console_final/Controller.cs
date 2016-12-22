@@ -10,6 +10,7 @@ namespace ravengaard_console_final
     {
 
         public bool isLoggedIn { get; set; }
+        private Client loggedInClient = new Client();
 
         private ClientRepository cliRepo = new ClientRepository();
         private RingTypeRepository ringTypeRepo = new RingTypeRepository();
@@ -34,6 +35,7 @@ namespace ravengaard_console_final
         public void GetClientRepositoryFromDb()
         {
             cliRepo.Clear();
+            Db.GetClient(cliRepo);
         }
 
         public void GetRingTypeRepositoryFromDb()
@@ -126,6 +128,7 @@ namespace ravengaard_console_final
                     if (Db.isUsernamePasswordCorrect(username, password))
                     {
                         isLoggedIn = true;
+                        loggedInClient = cliRepo.Load(username);
                     }
                     else
                     {
@@ -161,7 +164,7 @@ namespace ravengaard_console_final
             Ui.WriteL("Email: ");
             email = Console.ReadLine();
 
-            Client newClient = cliRepo.CreateClient(firstName, lastName, phone, address, email, password);
+            Client newClient = cliRepo.Create(cliRepo.NextId(),firstName, lastName, phone, address, email, password);
             bool inserted = Db.InsertClientIntoDb(newClient);
 
             GetClientRepositoryFromDb();
@@ -214,7 +217,7 @@ namespace ravengaard_console_final
         }
         private void Checkout()
         {
-            bool isCheckingOut = false;
+            bool isCheckingOut = true;
 
             string option = "";
             do
@@ -227,28 +230,22 @@ namespace ravengaard_console_final
                         Ui.ShowAllInsertedProducts(productRepo.getAllProductsCreatedThisSession(), ringTypeRepo, rockRepo, colorRepo, pendantRepo, chainRepo);
                         break;
                     case "2":
-                        //CheckoutItems();
+                        CheckoutItems();
                         break;
-                    /*default:
-                        if (isExitOption(option))
-                        {
-                            isCheckingOut = checkRingIsCompleted(ringType, rock, color);
-                            option = "";
-
-                            if (allFieldsAreFullfiled(ringType, rock, color) && isDesigning == false)
-                            {
-                                Product ring = productRepo.CreateRing(productRepo.NextId(), rock, ringType, color);
-                                productRepo.AddRing(ring);
-                            }
-                        }
-                        else
-                        {
+                    default:
+                        if (isExitOption(option)== false)
+                        { 
                             Ui.ShowInvalidOptionError(option);
                         }
-                        break;*/
+                        break;
                 }
             } while (isCheckingOut == true && isExitOption(option) == false);
 
+        }
+
+        private void CheckoutItems()
+        {
+            Db.AddProductsToTheDb(productRepo.getAllProductsCreatedThisSession(), loggedInClient);
         }
 
         private void RingDesigner()
@@ -284,7 +281,6 @@ namespace ravengaard_console_final
                             if (allFieldsAreFullfiled(ringType,rock,color) && isDesigning == false)
                             {
                                 Product ring = productRepo.CreateRing(productRepo.NextId(),rock, ringType, color,true);
-                                productRepo.AddRing(ring);
                             }
                         }
                         else
@@ -397,7 +393,6 @@ namespace ravengaard_console_final
                             if(isDesigning == false && allFieldsAreFullfiled(pendant,chain,color))
                             {
                                 Product necklace = productRepo.CreateNecklace(productRepo.NextId(), chain,pendant,color,true);
-                                productRepo.AddNecklace(necklace);
                             }
                         }
                         else
