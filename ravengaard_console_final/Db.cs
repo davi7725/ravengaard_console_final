@@ -159,8 +159,7 @@ namespace ravengaard_console_final
                 }
                 catch (SqlException e)
                 {
-                    Ui.WriteL(e.ToString());
-                    Ui.WriteL("There was an error, try again later!");
+                    throw e;
                 }
             }
         }
@@ -193,8 +192,7 @@ namespace ravengaard_console_final
                 }
                 catch (SqlException e)
                 {
-                    Ui.WriteL(e.ToString());
-                    Ui.WriteL("There was an error, try again later!");
+                    throw e;
                 }
             }
         }
@@ -220,8 +218,7 @@ namespace ravengaard_console_final
                 }
                 catch (SqlException e)
                 {
-                    Ui.WriteL(e.ToString());
-                    Ui.WriteL("There was an error, try again later!");
+                    throw e;
                 }
             }
         }
@@ -248,8 +245,7 @@ namespace ravengaard_console_final
                 }
                 catch (SqlException e)
                 {
-                    Ui.WriteL(e.ToString());
-                    Ui.WriteL("There was an error, try again later!");
+                    throw e;
                 }
             }
         }
@@ -274,9 +270,7 @@ namespace ravengaard_console_final
                 }
                 catch (SqlException e)
                 {
-                    Ui.WriteL(e.ToString());
-                    Ui.WriteL("There was an error, try again later!");
-                    Ui.Wait();
+                    throw e;
                 }
             }
         }
@@ -317,8 +311,7 @@ namespace ravengaard_console_final
                 }
                 catch (SqlException e)
                 {
-                    Ui.WriteL(e.ToString());
-                    Ui.WriteL("There was an error, try again later!");
+                    throw e;
                 }
             }
         }
@@ -344,8 +337,7 @@ namespace ravengaard_console_final
                 }
                 catch (SqlException e)
                 {
-                    Ui.WriteL(e.ToString());
-                    Ui.WriteL("There was an error, try again later!");
+                    throw e;
                 }
             }
         }
@@ -373,8 +365,7 @@ namespace ravengaard_console_final
                 }
                 catch (SqlException e)
                 {
-                    Ui.WriteL(e.ToString());
-                    Ui.WriteL("There was an error, try again later!");
+                    throw e;
                 }
             }
 

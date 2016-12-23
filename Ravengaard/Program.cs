@@ -20,13 +20,25 @@ namespace Ravengaard
         private void Run()
         {
             bool programIsRunning = true;
+            bool canStartProgram = false;
 
-            ctrl.InitializeAllRepositories();
-            programIsRunning = ctrl.LoginProcedure();
 
-            while (programIsRunning == true)
+            Ui.WriteL("Loading . . .");
+            canStartProgram = ctrl.InitializeAllRepositories();
+
+            if (canStartProgram)
             {
-                programIsRunning = ctrl.MainMenuProcedure();
+                programIsRunning = ctrl.LoginProcedure();
+
+                while (programIsRunning == true)
+                {
+                    programIsRunning = ctrl.MainMenuProcedure();
+                }
+            }
+            else
+            {
+                Ui.WriteL("Could not connect to the DB. Please verify your connection or try again later!");
+                Ui.Wait();
             }
         }
     }

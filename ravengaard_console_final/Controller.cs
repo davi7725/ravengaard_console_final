@@ -21,15 +21,25 @@ namespace ravengaard_console_final
         private ProductRepository productRepo = new ProductRepository();
 
 
-        public void InitializeAllRepositories()
+        public bool InitializeAllRepositories()
         {
-            GetClientRepositoryFromDb();
-            GetRingTypeRepositoryFromDb();
-            GetRockRepositoryFromDb();
-            GetColorRepositoryFromDb();
-            GetPendantRepositoryFromDb();
-            GetChainRepositoryFromDb();
-            GetProductRepositoryFromDb();
+            bool couldInititalize = true;
+            try
+            {
+                GetClientRepositoryFromDb();
+                GetRingTypeRepositoryFromDb();
+                GetRockRepositoryFromDb();
+                GetColorRepositoryFromDb();
+                GetPendantRepositoryFromDb();
+                GetChainRepositoryFromDb();
+                GetProductRepositoryFromDb();
+            }
+            catch
+            {
+                couldInititalize = false;
+            }
+
+            return couldInititalize;
         }
 
         public void GetClientRepositoryFromDb()
@@ -227,10 +237,31 @@ namespace ravengaard_console_final
                 switch (option)
                 {
                     case "1":
-                        Ui.ShowAllInsertedProducts(productRepo.getAllProductsCreatedThisSession(), ringTypeRepo, rockRepo, colorRepo, pendantRepo, chainRepo);
-                        break;
+                        Dictionary<int, Product> productsFromThisSession = productRepo.getAllProductsCreatedThisSession();
+                        if (productsFromThisSession.Count > 0)
+                        {
+                            Ui.ShowAllInsertedProducts(productRepo.getAllProductsCreatedThisSession(), ringTypeRepo, rockRepo, colorRepo, pendantRepo, chainRepo);
+                        }
+                        else
+                        {
+                            Ui.Clear();
+                            Ui.WriteL("Your cart is empty!");
+                            Ui.Wait();
+                        }
+                            break;
                     case "2":
-                        CheckoutItems();
+                        if (productRepo.getAllProductsCreatedThisSession().Count > 0)
+                        {
+                            CheckoutItems();
+                            isCheckingOut = false;
+                            productRepo.Clear();
+                        }
+                        else
+                        {
+                            Ui.Clear();
+                            Ui.WriteL("You don't have any products in your cart!");
+                            Ui.Wait();
+                        }
                         break;
                     default:
                         if (isExitOption(option)== false)
@@ -415,7 +446,7 @@ namespace ravengaard_console_final
 
             do
             {
-                Ui.ShowListOfOptions(pendantProducts);
+                Ui.ShowListOfOptions(pendantProducts, "Id - Name | Height | Width");
 
                 option = Console.ReadLine();
 
@@ -452,7 +483,7 @@ namespace ravengaard_console_final
 
             do
             {
-                Ui.ShowListOfOptions(chainProducts);
+                Ui.ShowListOfOptions(chainProducts, "Id - Name | Length | Thickness");
 
                 option = Console.ReadLine();
 
@@ -489,7 +520,7 @@ namespace ravengaard_console_final
 
             do
             {
-                Ui.ShowListOfOptions(ringTypeProducts);
+                Ui.ShowListOfOptions(ringTypeProducts, "Id - Name");
 
                 option = Console.ReadLine();
 
@@ -525,7 +556,7 @@ namespace ravengaard_console_final
 
             do
             {
-                Ui.ShowListOfOptions(rockProducts);
+                Ui.ShowListOfOptions(rockProducts, "Id - Name");
 
                 option = Console.ReadLine();
 
@@ -562,7 +593,7 @@ namespace ravengaard_console_final
 
             do
             {
-                Ui.ShowListOfOptions(colorProducts);
+                Ui.ShowListOfOptions(colorProducts,"Id - Name");
 
                 option = Console.ReadLine();
 
